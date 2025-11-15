@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Portfolio</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         /* CSS Reset and Variables */
         :root {
@@ -279,24 +280,125 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #79c0ff;
         }
+
+        /* ======================================================= */
+/* RESPONSIVE DESIGN (MOBILE FIXES)              */
+/* ======================================================= */
+
+/* Mobile Menu Button - Hidden by default on desktop */
+.menu-toggle {
+    display: none;
+    font-size: 1.5em;
+    cursor: pointer;
+    color: var(--text-color);
+}
+
+@media (max-width: 768px) {
+    /* Adjust padding and margins for smaller screens */
+    .container {
+        padding: 0 15px;
+    }
+
+    .section-padding {
+        padding: 60px 0; /* Reduce section padding */
+    }
+
+    .section-title {
+        font-size: 2.2em; /* Smaller section titles */
+        margin-bottom: 40px;
+    }
+
+    /* --- 1. Hero Section Adjustments --- */
+    #hero {
+        height: auto; /* Allow height to adjust to content */
+        min-height: 80vh;
+        padding: 100px 0;
+    }
+
+    .hero-content h1 {
+        font-size: 3em; /* Smaller main heading */
+        white-space: normal; /* Allow text to wrap */
+        border-right: none; /* Remove typing cursor effect on wrap */
+    }
+
+    .hero-content p.headline {
+        font-size: 1.2em;
+    }
+
+    .hero-content .btn {
+        display: block; /* Make buttons stack vertically */
+        width: 80%; /* Give buttons a consistent width */
+        margin: 10px auto;
+    }
+
+    /* --- 2. Grid Layout Collapse --- */
+    .card-grid {
+        grid-template-columns: 1fr; /* Force all grids to a single column */
+        gap: 20px;
+    }
+    
+    /* Ensure the skills section cards still look good in a single column */
+    #skills .card-grid, #certificates .card-grid {
+        grid-template-columns: 1fr; 
+        text-align: left;
+    }
+
+    /* --- 3. Navigation Bar Mobile State --- */
+    .navbar {
+        padding: 10px 0; /* Smaller header padding */
+    }
+
+    /* Hide the desktop nav links initially and style for mobile */
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 60px; /* Below the header */
+        left: 0;
+        width: 100%;
+        background-color: var(--card-color);
+        box-shadow: 0 5px 5px rgba(0, 0, 0, 0.5);
+        padding: 20px 0;
+    }
+
+    /* Show the navigation when the 'active' class is added by JS */
+    .nav-links.active {
+        display: flex;
+    }
+
+    .nav-links a {
+        margin: 10px 20px;
+        padding: 10px 0;
+        width: 100%;
+        border-bottom: 1px solid var(--secondary-color);
+    }
+    
+    .nav-links a:last-child {
+        border-bottom: none;
+    }
+
+    /* Display the hamburger icon on mobile */
+    .menu-toggle {
+        display: block;
+    }
+}
     </style>
 </head>
 <body>
 
     <header>
         <div class="container navbar">
-            <a href="#hero" class="logo">Portfolio</a>
-            <nav class="nav-links">
-                <a href="#about">About</a>
-                <a href="#experience">Experience</a>
-                <a href="#projects">Projects</a>
-                <a href="#upcoming-projects">Planned Projects</a>
-                <a href="#certificates">Certificates</a>
-                <a href="#skills">Skills</a>
-                <a href="#contact" class="btn">Contact Me</a>
-           
-            </nav>
-        </div>
+        <a href="#hero" class="logo">Portfolio</a>
+        <div class="menu-toggle" id="menu-toggle"> <i class="fas fa-bars"></i> </div>
+        <nav class="nav-links" id="nav-links"> <a href="#about">About</a>
+            <a href="#experience">Experience</a>
+            <a href="#projects">Projects</a>
+            <a href="#upcoming-projects">Planned Projects</a>
+            <a href="#certificates">Certificates</a>
+            <a href="#skills">Skills</a>
+            <a href="#contact" class="btn" style="margin-left: 20px;">Contact Me</a> 
+        </nav>
+    </div>
     </header>
 
     <section id="hero" class="section-padding">
@@ -489,47 +591,67 @@ rigorous model evaluation</p>
     </footer>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Select all sections that need animation
-            const sections = document.querySelectorAll('.section-padding');
+    document.addEventListener('DOMContentLoaded', function() {
+        // --- NEW: Mobile Menu Toggle Logic ---
+        const menuToggle = document.getElementById('menu-toggle');
+        const navLinks = document.getElementById('nav-links');
+        const allNavLinks = document.querySelectorAll('#nav-links a');
 
-            // Set up the Intersection Observer
-            const observer = new IntersectionObserver(entries => {
-                entries.forEach(entry => {
-                    // If the section is intersecting (in the viewport)
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('animate');
-                        // Stop observing once it has animated
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, {
-                // Root is the viewport
-                root: null,
-                // Start animation when 15% of the section is visible
-                threshold: 0.15 
+        if (menuToggle && navLinks) {
+            menuToggle.addEventListener('click', function() {
+                // Toggles the 'active' class to show/hide the menu
+                navLinks.classList.toggle('active');
             });
 
-            // Apply observer to each section (except the hero section, which is visible on load)
-            sections.forEach(section => {
-                if (section.id !== 'hero') {
-                    observer.observe(section);
-                } else {
-                    // Make sure the hero section is visible immediately
-                    section.classList.add('animate');
+            // Close the menu when a link is clicked (to navigate to a section)
+            allNavLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    navLinks.classList.remove('active');
+                });
+            });
+        }
+        // --- END NEW MOBILE LOGIC ---
+
+        // Select all sections that need animation
+        const sections = document.querySelectorAll('.section-padding');
+
+        // Set up the Intersection Observer
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                // If the section is intersecting (in the viewport)
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate');
+                    // Stop observing once it has animated
+                    observer.unobserve(entry.target);
                 }
             });
+        }, {
+            // Root is the viewport
+            root: null,
+            // Start animation when 15% of the section is visible
+            threshold: 0.15 
+        });
 
-            // Smooth Scroll for Navigation
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    document.querySelector(this.getAttribute('href')).scrollIntoView({
-                        behavior: 'smooth'
-                    });
+        // Apply observer to each section (except the hero section, which is visible on load)
+        sections.forEach(section => {
+            if (section.id !== 'hero') {
+                observer.observe(section);
+            } else {
+                // Make sure the hero section is visible immediately
+                section.classList.add('animate');
+            }
+        });
+
+        // Smooth Scroll for Navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
                 });
             });
         });
-    </script>
+    });
+</script>
 </body>
 </html>
