@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* CSS Reset and Variables */
+        :root {
+            --bg-color: #0d1117;
+            --text-color: #e6edf3;
+            --primary-color: #58a6ff; /* A professional blue */
+            --secondary-color: #21262d;
+            --card-color: #161b22;
+            --border-radius: 8px;
+            --transition-duration: 0.4s;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            scroll-behavior: smooth;
+        }
+
+        /* Utility Classes */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .section-padding {
+            padding: 100px 0;
+            opacity: 0; /* Hidden for scroll animation */
+            transform: translateY(50px); /* Start slightly below */
+            transition: opacity var(--transition-duration) ease-out, transform var(--transition-duration) ease-out;
+        }
+
+        .section-padding.animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 3em;
+            margin-bottom: 60px;
+            color: var(--primary-color);
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: var(--primary-color);
+            margin: 10px auto 0;
+            border-radius: 2px;
+        }
+
+        /* Header and Navigation */
+        header {
+            background-color: var(--card-color);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: var(--text-color);
+            text-decoration: none;
+        }
+
+        .nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            margin-left: 30px;
+            font-weight: 400;
+            transition: color 0.3s, transform 0.3s;
+            position: relative;
+        }
+
+        /* Hover Effect for Navigation Links */
+        .nav-links a:hover {
+            color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+        
+        /* Underline effect on hover */
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -5px;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-color);
+            transition: width 0.3s ease-out;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+
+        /* Hero Section */
+        #hero {
+    height: 85vh;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    background:
+        linear-gradient(rgba(13,17,23,0.75), rgba(13,17,23,0.9)),
+        url("https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExYWlydjl1ODZqMmVtemplcDJiN3FmbXR0dTc4dXNiNmJuNGtraDQ2NSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/l41YvpiA9uMWw5AMU/giphy.gif") center/cover no-repeat;
+        }
+
+        .hero-content {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .hero-content h1 {
+            font-size: 4.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+            /* Typing effect simulated by a smooth cursor */
+            border-right: 4px solid var(--primary-color);
+            white-space: nowrap;
+            overflow: hidden;
+            animation: blink-caret 0.75s step-end infinite;
+        }
+
+        .hero-content p {
+            font-size: 1.5em;
+            color: var(--primary-color);
+            margin-bottom: 40px;
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: var(--primary-color); }
+        }
+
+        /* Button Style - Click Effect */
+        .btn {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: var(--bg-color);
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        /* Action/Click Effect */
+        .btn:hover {
+            background-color: #79c0ff; /* Lighter shade on hover */
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(88, 166, 255, 0.4);
+        }
+
+        .btn:active {
+            transform: scale(0.98); /* Pulse/Click effect */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Card Layout for Content Sections */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .card {
+            background-color: var(--card-color);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--secondary-color);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        /* Hover effect for cards */
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(88, 166, 255, 0.1);
+        }
+
+        .card h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .card .meta {
+            color: #8b949e;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        /* Skills Section */
+        #skills .card-grid {
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            text-align: center;
+        }
+
+        .skill-item h4 {
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .skill-item p {
+            font-size: 0.9em;
+            color: #8b949e;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--card-color);
+            text-align: center;
+            padding: 30px 0;
+            border-top: 1px solid var(--secondary-color);
+        }
+
+        footer p {
+            margin-bottom: 10px;
+            font-size: 0.9em;
+        }
+
+        .social-links a {
+            color: var(--primary-color);
+            font-size: 1.5em;
+            margin: 0 10px;
+            transition: color 0.3s;
+        }
+
+        .social-links a:hover {
+            color: #79c0ff;
+        }
+
+        /* Scrollbar styling for a modern look */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-color);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #79c0ff;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container navbar">
+            <a href="#hero" class="logo">Portfolio</a>
+            <nav class="nav-links">
+                <a href="#about">About</a>
+                <a href="#experience">Experience</a>
+                <a href="#projects">Projects</a>
+                <a href="#skills">Skills</a>
+                <a href="#contact" class="btn">Contact Me</a>
+           
+            </nav>
+        </div>
+    </header>
+
+    <section id="hero" class="section-padding">
+        <div class="hero-content">
+            <p>Hi, I'm</p>
+            <h1>Aadithya C</h1>
+            <p class="headline">Software Developer</p>
+            <a href="#projects" class="btn">View My Work</a>
+            <a href="AadithyaC_Resume.pdf" download class="btn">Download Resume</a>
+        </div>
+    </section>
+
+    <section id="about" class="section-padding">
+        <div class="container">
+            <h2 class="section-title">About Me</h2>
+            <div class="card">
+                <p style="font-size: 1.1em;">
+                Software Developer with progressive experience specializing in Geospacial Data Analysis and AWS-based ML Pipelines, Seeking to leverage strong foundational skills in Python, AWS, TensorFlow and  to deliver high-accuracy models as an AI/ML Engineer.    
+                </p>
+                <div style="margin-top: 30px;">
+                    <h3 style="margin-bottom: 10px;">Education</h3>
+                    <p class="meta">B.Tech - Computer Science and Engineering (Artificial Intelligence and Data Science) - SASTRA | 2020 - 2024</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="experience" class="section-padding">
+        <div class="container">
+            <h2 class="section-title">Experience</h2>
+            <div class="card-grid">
+                <div class="card">
+                    <h3>Solution Engineer - GIDE</h3>
+                    <span class="meta">Hitachi Energy | Aug 2025 - Present</span>
+                    <ul>
+                        <li>Streamlined HVM pipeline processing 100GB+ of vector/raster data.</li>
+                        <li>Executed ML pipeline on AWS SageMaker using satellite imagery.</li>
+                        <li>Performed geospatial data analysis using QGIS for vegetation insights.</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3>Management Trainee</h3>
+                    <span class="meta">Hitachi Energy | Aug 2024 - Jul 2025</span>
+                    <ul>
+                        <li>Managed GitLab repositories and supported ML/data workflows.</li>
+                        <li>Handled 10+ VMware ESXi critical VMs ensuring 99.9% uptime.</li>
+                        <li>Provided technical assistance on vegetation management projects.</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3>Intern</h3>
+                    <span class="meta">Hitachi Energy | Feb 2024 - Jul 2024</span>
+                    <ul>
+                        <li>Developed and deployed 5 client interfaces using Groovy, reducing manual data entry.</li>
+                        <li>Ensured API reliability by conducting comprehensive web services testing  using SoapUI for core modules.</li>
+                        <li>Established a 3-point data verification pipeline(file, database, report) to ensure high data integrity for regulatory control reporting.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects" class="section-padding">
+        <div class="container">
+            <h2 class="section-title">Projects</h2>
+            <div class="card-grid">
+                <div class="card">
+                    <h3>NammaQR</h3>
+                    <span class="meta">Technologies: Next.js, Prompt Engineering, Supabase</span>
+                    <p>QR-based digital menu & order management web app designed to enable zero-backend maintenance for cafés and restaurants.</p>
+                    <a href="https://nammaqr.vercel.app/?table=T05" target="_blank" class="btn" style="margin-top: 15px; padding: 8px 15px; font-size: 0.9em;">View Project</a>
+                </div>
+                <div class="card">
+                    <h3>Prediction of Chronic Kidney Disease</h3>
+                    <span class="meta">Technologies: ML Algorithms, Deep learning</span>
+                    <p>Achieved 96% accuracy using deep learning after SMOTE balancing and feature selection.</p>
+                    
+                </div>
+                <div class="card">
+                    <h3>Object Localization using TensorFlow</h3>
+                    <span class="meta">Technologies: TensorFlow, Python</span>
+                     <p>Implemented localization models to detect and locate objects in images.</p>
+                    
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="skills" class="section-padding">
+        <div class="container">
+            <h2 class="section-title">Core Skills</h2>
+            <div class="card-grid">
+                <div class="card skill-item">
+                    <h4>AI/ML & Data</h4>
+                    <p>Python, TensorFlow, SageMaker, Power BI, QGIS, SQL</p>
+                </div>
+                <div class="card skill-item">
+                    <h4>Cloud & Infra</h4>
+                    <p>AWS S3, VMware ESXi, Postman API</p>
+                </div>
+                <div class="card skill-item">
+                    <h4>Programming</h4>
+                    <p>Java, Groovy, Git/GitLab</p>
+                </div>
+                <div class="card skill-item">
+                    <h4>Tools</h4>
+                    <p>SoapUI, Git Bash, Azure ML Studio</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="section-padding">
+        <div class="container">
+            <h2 class="section-title">Get In Touch</h2>
+            <div class="card" style="max-width: 600px; margin: 0 auto; text-align: center;">
+                <p style="margin-bottom: 20px;">
+                    I am currently open to new opportunities and collaborations. Feel free to connect with me!
+                </p>
+                <a href="mailto:aadithya2711@gmail.com" class="btn">Email Me Directly</a>
+                <p style="margin-top: 20px; font-size: 0.9em;">
+                    Or connect on LinkedIn:
+                </p>
+                <a href="https://www.linkedin.com/in/aadithya-chandrasekaran-b8635611b/" target="_blank" class="btn" style="background-color: #0077b5; color: white;">LinkedIn Profile</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>Designed and Built by Aadithya C &copy; 2025</p>
+            <div class="social-links">
+                <a href="https://www.linkedin.com/in/aadithya-chandrasekaran-b8635611b/" target="_blank">LinkedIn</a> <a href="https://github.com/aadithya-aiml" target="_blank">GitHub</a> </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Select all sections that need animation
+            const sections = document.querySelectorAll('.section-padding');
+
+            // Set up the Intersection Observer
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    // If the section is intersecting (in the viewport)
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate');
+                        // Stop observing once it has animated
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                // Root is the viewport
+                root: null,
+                // Start animation when 15% of the section is visible
+                threshold: 0.15 
+            });
+
+            // Apply observer to each section (except the hero section, which is visible on load)
+            sections.forEach(section => {
+                if (section.id !== 'hero') {
+                    observer.observe(section);
+                } else {
+                    // Make sure the hero section is visible immediately
+                    section.classList.add('animate');
+                }
+            });
+
+            // Smooth Scroll for Navigation
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
