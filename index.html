@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Portfolio</title>
+    <title>Portfolio</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="icon" type="image/x-icon" sizes="16x16" href="fav.ico">
     <style>
         /* CSS Reset and Variables */
         :root {
@@ -16,7 +17,115 @@
             --card-color: #161b22;
             --border-radius: 8px;
             --transition-duration: 0.4s;
+            --cursor-color: var(--primary-color);
         }
+
+        /* ======================================================= */
+/* NEW: PARTICLE TRAIL/BURST EFFECT STYLES                 */
+/* ======================================================= */
+
+.cursor-trail {
+    position: fixed;
+    pointer-events: none;
+    z-index: 9998; /* Below the main cursor */
+    /* Start invisible */
+    opacity: 0;
+    width: 0;
+    height: 0;
+    transform: translate(-50%, -50%);
+    
+    /* Set up the particle container (a radial gradient glow) */
+    box-shadow: 0 0 5px 5px rgba(88, 166, 255, 0.5); /* Initial small glow */
+    background: radial-gradient(circle, var(--primary-color) 0%, transparent 70%);
+    border-radius: 50%;
+}
+
+/* 1. ANIMATION: The Particle Burst Effect */
+@keyframes particle-burst {
+    0% {
+        opacity: 1;
+        width: 10px;
+        height: 10px;
+        box-shadow: 0 0 5px 5px rgba(88, 166, 255, 0.5);
+    }
+    100% {
+        opacity: 0;
+        width: 40px; /* Expands outwards */
+        height: 40px;
+        box-shadow: 0 0 10px 10px rgba(88, 166, 255, 0); /* Glow fades out */
+    }
+}
+
+/* 1. Base Cursor Style */
+:root {
+    --cursor-color: #58a6ff; /* Keep original primary color for neon */
+}
+
+body {
+    cursor: none;
+}
+
+/* 2. Custom Cursor Element (Default State) */
+.custom-cursor {
+    position: fixed;
+    width: 14px;
+    height: 14px;
+    border: 2px solid var(--cursor-color); /* Thicker border */
+    border-radius: 50%;
+    background-color: rgba(88, 166, 255, 0.1); /* Slight fill */
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    /* Transition for size/color changes on hover */
+    transition: width 0.3s ease, height 0.3s ease, background-color 0.3s ease, border-color 0.3s ease, transform 0.1s;
+    z-index: 9999;
+
+    /* NEON GLOW & DEFAULT PULSE ANIMATION */
+    box-shadow: 0 0 10px var(--cursor-color), 0 0 20px rgba(88, 166, 255, 0.5);
+    animation: neon-pulse 2s infinite alternate ease-in-out;
+}
+
+/* 3. Hover State for Links/Buttons (The Spin Effect) */
+a:hover ~ .custom-cursor,
+.btn:hover ~ .custom-cursor,
+.menu-toggle:hover ~ .custom-cursor,
+.card:hover ~ .custom-cursor {
+    width: 30px;
+    height: 30px;
+    background-color: var(--cursor-color);
+    border-color: var(--bg-color);
+    box-shadow: inset 0 0 10px var(--text-color), 0 0 20px var(--primary-color);
+    /* STOP the pulse and START the spin on hover */
+    animation: neon-spin 0.8s infinite linear;
+}
+
+/* 4. Click State (The Active Effect) */
+/* This requires a quick JavaScript addition (see guide below) */
+.custom-cursor.active {
+    /* Quick pulse/shrink effect on click/mousedown */
+    transform: translate(-50%, -50%) scale(0.8);
+    background-color: var(--primary-color);
+    opacity: 0.8;
+}
+
+
+/* ANIMATION KEYFRAMES */
+
+/* A. Default State Pulse */
+@keyframes neon-pulse {
+    from {
+        box-shadow: 0 0 10px var(--cursor-color), 0 0 20px rgba(88, 166, 255, 0.5);
+    }
+    to {
+        box-shadow: 0 0 15px var(--cursor-color), 0 0 30px rgba(88, 166, 255, 0.8);
+    }
+}
+
+/* B. Hover State Spin (Transforms the cursor element) */
+@keyframes neon-spin {
+    from { transform: translate(-50%, -50%) rotate(0deg); }
+    to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
 
         * {
             margin: 0;
@@ -124,6 +233,15 @@
         }
 
 
+        .nav-links a.btn.secondary {
+             transition: color 0.3s, transform 0.2s, background-color 0.3s; /* Add color to transition */
+        }
+
+        .nav-links a.btn.secondary:hover {
+            color: var(--primary-color) !important; /* Override button background color text color */
+        }
+
+
         /* Hero Section */
         #hero {
     height: 85vh;
@@ -161,6 +279,20 @@
             from, to { border-color: transparent }
             50% { border-color: var(--primary-color); }
         }
+
+        /* Style for secondary buttons (like download resume) */
+        .btn.secondary {
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            border: 1px solid var(--primary-color);
+            box-shadow: none;
+        }
+        
+        .btn.secondary:hover {
+            background-color: #121417;
+            box-shadow: 0 0 15px rgba(88, 166, 255, 0.4);
+        }
+
 
         /* Button Style - Click Effect */
         .btn {
@@ -385,10 +517,11 @@
     </style>
 </head>
 <body>
-
+<div class="custom-cursor"></div>
+<div class="cursor-trail"></div>
     <header>
         <div class="container navbar">
-        <a href="#hero" class="logo">Portfolio</a>
+        <a href="#hero" class="logo"></a>
         <div class="menu-toggle" id="menu-toggle"> <i class="fas fa-bars"></i> </div>
         <nav class="nav-links" id="nav-links"> <a href="#about">About</a>
             <a href="#experience">Experience</a>
@@ -396,7 +529,7 @@
             <a href="#upcoming-projects">Planned Projects</a>
             <a href="#certificates">Certificates</a>
             <a href="#skills">Skills</a>
-            <a href="#contact" class="btn" style="margin-left: 20px;">Contact Me</a> 
+            <a href="#contact" class="btn secondary" style="margin-left: 20px;">Contact Me</a> 
         </nav>
     </div>
     </header>
@@ -407,7 +540,7 @@
             <h1>Aadithya C</h1>
             <p class="headline">Software Developer</p>
             <a href="#projects" class="btn">View My Work</a>
-            <a href="AadithyaC_Resume.pdf" download class="btn">Download Resume</a>
+            <!-- <a href="AadithyaC_Resume.pdf" download class="btn">Download Resume</a> -->
         </div>
     </section>
 
@@ -596,6 +729,64 @@ rigorous model evaluation</p>
         const menuToggle = document.getElementById('menu-toggle');
         const navLinks = document.getElementById('nav-links');
         const allNavLinks = document.querySelectorAll('#nav-links a');
+        const customCursor = document.querySelector('.custom-cursor');
+
+if (customCursor) {
+    // Get the new trail element
+    const cursorTrail = document.querySelector('.cursor-trail');
+    
+    // --- 1. Mouse Movement and Position Update ---
+    document.addEventListener('mousemove', (e) => {
+        const x = e.clientX;
+        const y = e.clientY;
+
+        // Update the main cursor position
+        customCursor.style.left = x + 'px';
+        customCursor.style.top = y + 'px';
+
+        // Update the trail position (slightly lagging for a better effect)
+        cursorTrail.style.left = x + 'px';
+        cursorTrail.style.top = y + 'px';
+    });
+    
+    // --- 2. Click/Mousedown Effect ---
+    document.addEventListener('mousedown', () => {
+        // Main cursor click pulse
+        customCursor.classList.add('active');
+        
+        // Trigger the particle burst
+        cursorTrail.style.animation = 'none'; // Reset animation
+        // Must wait for the next frame to restart the animation
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                cursorTrail.style.animation = 'particle-burst 0.5s ease-out forwards';
+            });
+        });
+    });
+
+    document.addEventListener('mouseup', () => {
+        // Remove active class after click
+        setTimeout(() => {
+            customCursor.classList.remove('active');
+        }, 50); 
+    });
+    
+    // --- 3. Hover Burst (Optional, but adds flair) ---
+    const interactiveElements = 'a, .btn, .menu-toggle, .card';
+
+    document.querySelectorAll(interactiveElements).forEach(el => {
+        el.addEventListener('mouseenter', () => {
+            // Trigger a softer particle burst on hover
+            cursorTrail.style.animation = 'none'; 
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    cursorTrail.style.animation = 'particle-burst 0.3s ease-out forwards';
+                });
+            });
+        });
+    });
+
+}
 
         if (menuToggle && navLinks) {
             menuToggle.addEventListener('click', function() {
